@@ -31,40 +31,132 @@ All of this was settled in 1864, by Maxwell, in a paper about trusses. It's not 
 
 ## Intuition
 
-Fold the drawing along its edges, as though it were a sheet of paper. Each edge
-becomes a ridge or a valley and carries a single number: how sharply it folds.
-Call that number `ω_e`.
+### The question, as a statement about springs
 
-The folds must agree at every vertex. Walk once around a vertex, adding up the
-height changes edge by edge, and the total has to return to zero. That closing
-condition is the only requirement. If every vertex satisfies it, the folds
-assemble into a surface.
-
-Written out, the closing condition at vertex `i` is
+Put a spring on every edge. Let the spring on edge `ij` have stiffness `ω_ij`,
+and let the force it applies to vertex `i` be proportional to the edge itself:
 
 ```
-    Σ  ω_ij (p_j − p_i)  =  0
-   j~i
+    force on i from edge ij  =  ω_ij (p_j − p_i)
 ```
 
-which is also the condition for vertex `i` to stay put when its edges pull on
-it with forces `ω_e`. Maxwell's observation is that these are the same
-equation. Deciding whether a drawing is a shadow therefore reduces to asking
-whether a homogeneous linear system has a non-zero solution.
+where `p_i` is the position of vertex `i` in the drawing.
 
-The force vocabulary is worth keeping, because the signs carry meaning:
-`ω > 0` is tension and bends the fold one way, `ω < 0` is compression and bends
-it the other. A drawing whose interior edges all share a sign is the projection
-of a convex polyhedron.
+Stiffnesses are allowed to be negative. A negative stiffness describes a strut,
+which pushes its endpoints apart rather than pulling them together. Both signs
+are needed for the same reason nineteenth-century engineering needed them:
+stone carries only compression, while iron and steel also carry tension.
+
+The natural question about such a system is whether it can sit still.
+
+> Can stiffnesses be chosen, not all of them zero, so that every vertex is in
+> equilibrium and nothing moves?
+
+```
+     Σ   ω_ij (p_j − p_i)  =  0        at every vertex i
+    j~i
+```
+
+This is a homogeneous linear system, and the question is whether it has a
+non-zero solution. Such an `ω` is a **self-stress**.
+
+So far this is a statics problem in the plane, with no reference to three
+dimensions at all.
+
+### Why it has anything to do with three dimensions
+
+Suppose the drawing really is the shadow of a solid. Then each face has been
+lifted into a tilted plane, hanging directly above its own footprint.
+
+The **slope** of such a plane is a two-dimensional vector `a`: moving in
+direction `u` raises the height at rate `a · u`. The one vector records both
+how fast the plane climbs going east and how fast it climbs going north.
+
+### Walking along a crease
+
+![Why the slope difference across an edge is perpendicular to it](./figures/crease.png)
+
+Two neighbouring faces `f` and `g` meet along a shared edge `e`, which after
+lifting is a crease in the roof.
+
+A point travelling along that crease lies on both faces at once, so its rate of
+climb must come out the same whether it is computed from `f`'s slope or from
+`g`'s. Otherwise, a metre further along, the two faces would assign that line
+two different heights, and they would not be joined along it at all. Writing
+`u` for the direction of the edge:
+
+```
+    a_f · u = a_g · u        ⟹        (a_f − a_g) · u = 0
+```
+
+The difference of the two slopes is perpendicular to the edge. The middle panel
+above shows the alternative: slopes that disagree along the crease, and the gap
+that opens between the faces because of it.
+
+### Which leaves one number per edge
+
+Perpendicular to `e` there is only a line's worth of directions. Turning the
+edge vector a quarter turn gives `rot90(e)`, which spans that line, so
+
+```
+    a_f − a_g  =  ω_e · rot90(e)
+```
+
+for a single signed number `ω_e`.
+
+That step is where the shape of the theory comes from. A difference of slopes
+has two degrees of freedom, and requiring the two faces to meet along their
+shared edge spends one of them. Every edge is left with exactly one number,
+measuring how sharply the roof bends across that crease; `ω_e = 0` means the
+faces are coplanar and the crease is not really there.
+
+### Once around a vertex
+
+Now follow the faces around a single vertex. Crossing each edge changes the
+slope by `ω_e · rot90(e)`, and a full circuit returns to the face it started
+from, where the slope has to be what it was. The slope jumps around a vertex
+therefore close up into a polygon:
+
+```
+     Σ   ω_ij · rot90(p_j − p_i)  =  0
+    j~i
+```
+
+`rot90` is invertible and divides out:
+
+```
+     Σ   ω_ij (p_j − p_i)  =  0
+    j~i
+```
+
+which is the spring equilibrium equation from the start of this section.
+
+One closed polygon, read two ways a quarter turn apart: the roof closing up
+above a vertex, and the vertex standing still under the forces in its edges.
+That identity is Maxwell's observation of 1864, and it is also why the same
+letter fits both readings — the coefficients of the slope jumps are a set of
+spring stiffnesses in equilibrium.
+
+Deciding whether a drawing is a shadow therefore reduces to asking whether a
+homogeneous linear system has a non-zero solution.
+
+### What the signs mean
+
+`ω > 0` is tension and bends its crease one way; `ω < 0` is compression and
+bends it the other. A drawing whose interior edges all carry the same sign is
+the projection of a convex polyhedron.
+
+An unliftable drawing is one where no choice of stiffnesses closes every
+vertex. Some vertex's polygon has a gap in it, and the roof tears there, which
+is the bottom-right panel of the overview figure.
 
 ## Method
 
 A **planar framework** is a planar graph `G = (V, E)` with `n` vertices and
-`m` edges, drawn with straight edges at positions `p : V → ℝ²`. A
-**self-stress** is a vector `ω ∈ ℝ^m` satisfying the equilibrium equation above
-at every vertex. Collecting those `2n` scalar equations gives the `m × 2n`
-**rigidity matrix** `R(p)`, whose transpose has the self-stresses as its
-kernel:
+`m` edges, drawn with straight edges at positions `p : V → ℝ²`. Imposing the
+equilibrium equation at all `n` vertices gives `2n` scalar equations in the `m`
+unknowns `ω`, assembled as the `m × 2n` **rigidity matrix** `R(p)`, whose
+transpose has the self-stresses as its kernel:
 
 ```
     dim (self-stress space)  =  m − rank R(p)
@@ -257,7 +349,7 @@ turn out to be one map.
 - `src/examples.py` — the drawings the note argues from.
 - `src/test_stress.py` — 20 tests; the source of every number quoted above.
   Run with `python3 -m pytest src/test_stress.py` from this folder.
-- `src/make_figures.py` — regenerates all four figures deterministically.
+- `src/make_figures.py` — regenerates all five figures deterministically.
 - `demo.html` — the interactive version; single file, no dependencies.
 
 ## References
@@ -277,6 +369,9 @@ turn out to be one map.
    of the same question.
 5. E. Steinitz, 1922 — 3-connected planar graphs are the graphs of convex
    polyhedra. Taken up in GA-004.
+6. D. Sheehy, *Computational Geometry*, CMU 15-456, lecture 14 (2010) —
+   the source of the spring reading of `ω` used in the Intuition section, and
+   of the stone-to-iron framing for why both signs are needed.
 
 ---
 
