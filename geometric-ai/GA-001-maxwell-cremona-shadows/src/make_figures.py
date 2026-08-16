@@ -289,6 +289,109 @@ def make_tolerance():
     plt.close(figure)
 
 
+def _bare_3d(ax, elev=28, azim=-135):
+    ax.set_axis_off()
+    ax.view_init(elev=elev, azim=azim)
+
+
+def make_crease():
+    """Why the slope difference across an edge is perpendicular to that edge.
+
+    Both faces contain the crease, so walking along it they must agree on the
+    rate of climb. Their slopes therefore share their along-edge part and can
+    differ only across the edge, which leaves exactly one number per edge.
+    """
+    above, below = np.array([0.7, -1.0]), np.array([0.7, 0.5])
+    half = 1.0
+
+    def quad(slope, y_from, y_to):
+        corners = [(-half, y_from), (half, y_from), (half, y_to), (-half, y_to)]
+        return [(x, y, slope[0] * x + slope[1] * y) for x, y in corners]
+
+    figure = plt.figure(figsize=(13.2, 4.6))
+    grid = figure.add_gridspec(
+        1, 3, wspace=0.10, left=0.02, right=0.98, top=0.80, bottom=0.10
+    )
+
+    # --- 1. the setup ----------------------------------------------------
+    ax = figure.add_subplot(grid[0, 0], projection="3d")
+    _bare_3d(ax)
+    for slope, lo, hi, tone in [
+        (above, 0.0, 1.0, "#dbe4f0"), (below, -1.0, 0.0, "#efece6")
+    ]:
+        ax.add_collection3d(
+            Poly3DCollection([quad(slope, lo, hi)], facecolors=tone,
+                             edgecolors=MUTED, linewidths=1.2)
+        )
+    ax.plot([-half, half], [0, 0], [-0.7 * half, 0.7 * half],
+            color=INK, linewidth=3.2, zorder=8)
+    # Floated just above the ridge, or the crease line hides it.
+    ax.quiver(-0.55, 0, -0.285, 1.05, 0, 0.735, color=INK,
+              arrow_length_ratio=0.16, linewidth=2.0, zorder=9)
+    # text2D, so the surface cannot paint over the label
+    ax.text2D(0.46, 0.88, "walk along the crease", transform=ax.transAxes,
+              ha="center", color=INK, fontsize=10.5)
+    ax.set_box_aspect((2.0, 2.0, 1.5))
+    panel_title(ax, "Two faces, one crease")
+
+    # --- 2. what would go wrong ------------------------------------------
+    ax = figure.add_subplot(grid[0, 1])
+    ax.set_axis_off()
+    xs = np.linspace(-1, 1, 60)
+    ax.fill_between(xs, 0.7 * xs, 0.2 * xs, color=TENSION, alpha=0.16, zorder=1)
+    ax.plot(xs, 0.7 * xs, color=INK, linewidth=2.4, zorder=3)
+    ax.plot(xs, 0.2 * xs, color=TENSION, linewidth=2.4, zorder=3)
+    ax.text(1.04, 0.70, "the face below\nsays this", color=INK,
+            fontsize=10, va="center")
+    ax.text(1.04, 0.20, "the face above\nwould say this", color=TENSION,
+            fontsize=10, va="center")
+    ax.annotate("", xy=(0.72, 0.72 * 0.7), xytext=(0.72, 0.72 * 0.2),
+                arrowprops=dict(arrowstyle="<->", color=TENSION, lw=1.5))
+    ax.text(0.80, 0.72 * 0.45, "a gap", color=TENSION, fontsize=10,
+            ha="left", va="center")
+    ax.set_xlim(-1.15, 2.05); ax.set_ylim(-1.0, 1.0)
+    ax.text(-1.15, -0.88,
+            "height along the crease, if the slopes disagreed in the\n"
+            "along-edge direction: the faces would need two heights at once",
+            color=MUTED, fontsize=10)
+    panel_title(ax, "So they must agree along it")
+
+    # --- 3. hence perpendicular ------------------------------------------
+    ax = figure.add_subplot(grid[0, 2])
+    ax.set_aspect("equal"); ax.set_axis_off()
+    ax.plot([-1.15, 1.15], [0, 0], color=INK, linewidth=2.4,
+            solid_capstyle="round", zorder=2)
+    ax.text(1.2, 0, "edge", color=INK, fontsize=10.5, va="center")
+    ax.plot([above[0], above[0]], [above[1] - 0.12, below[1] + 0.12],
+            color=MUTED, linewidth=1.1, linestyle=(0, (3, 3)), zorder=1)
+    for vector, label, va in [
+        (below, "slope below", "bottom"), (above, "slope above", "top"),
+    ]:
+        ax.annotate("", xy=tuple(vector), xytext=(0, 0),
+                    arrowprops=dict(arrowstyle="-|>", color=SECONDARY, lw=1.9))
+        ax.text(vector[0] - 0.08, vector[1] + (0.1 if va == "bottom" else -0.1),
+                label, color=SECONDARY, fontsize=10, ha="right", va=va)
+    ax.annotate("", xy=tuple(above), xytext=tuple(below),
+                arrowprops=dict(arrowstyle="-|>", color=COMPRESSION, lw=3.0))
+    ax.text(above[0] + 0.1, -0.25, "their difference", color=COMPRESSION,
+            fontsize=10.5)
+    ax.add_patch(plt.Rectangle((above[0] - 0.16, 0), 0.16, -0.16, fill=False,
+                               edgecolor=MUTED, linewidth=1.2, zorder=4))
+    ax.text(-1.15, -1.55,
+            "same along-edge part, so the difference is\n"
+            "perpendicular — one number per edge",
+            color=MUTED, fontsize=10)
+    ax.set_xlim(-1.25, 1.75); ax.set_ylim(-1.75, 1.05)
+    panel_title(ax, "Leaving one number per edge")
+
+    figure.suptitle(
+        "Continuity along an edge leaves exactly one free number per edge",
+        fontsize=14, color=INK, y=0.955,
+    )
+    figure.savefig(FIGURES / "crease.png", dpi=190)
+    plt.close(figure)
+
+
 def make_vanishing_point():
     """Concurrency is necessary and nowhere near sufficient."""
     apex = (0.2, 0.1)
@@ -372,10 +475,12 @@ def make_tetrahedron():
 if __name__ == "__main__":
     FIGURES.mkdir(exist_ok=True)
     make_overview()
+    make_crease()
     make_tolerance()
     make_vanishing_point()
     make_tetrahedron()
     for name in (
-        "overview.png", "tolerance.png", "vanishing-point.png", "tetrahedron.png"
+        "overview.png", "crease.png", "tolerance.png",
+        "vanishing-point.png", "tetrahedron.png"
     ):
         print("wrote", FIGURES / name)

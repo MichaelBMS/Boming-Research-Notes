@@ -53,14 +53,9 @@ than a technical report. The cause was a single performative voice applied to
 the whole note, so the derivations were straining for effect alongside the
 hook. Two registers, kept separate:
 
-**Register A — the opening only** (Question plus the Motivation prose, ≤200
-words). Concise and light. **One** rhetorical turn is permitted; after it, go
+**Register A — the opening only** (Question plus the Motivation prose).
+Short, concise and light. **One** rhetorical turn is permitted; after it, go
 straight to the questions the note actually answers.
-
-The cap covers the hook prose, not flat factual content that happens to sit in
-the same section — GA-001's three-fields bullet list is Register B writing and
-is counted with the body. Measure the two separately rather than letting a
-useful list crowd out the hook, or the hook pad itself behind a list.
 
 **Register B — everything from Intuition onward.** Even-toned technical prose:
 state, define, derive, measure. The following are banned, because each one
@@ -163,9 +158,20 @@ the historical papers and the later literature disagree about which name
 attaches to which — the series picks the descriptive names above rather than
 the eponymous ones.
 
-### 2.4 Length and depth budget
+### 2.4 Depth
 
-Per note: **1200–1500 words of main text**, one demo, one `overview.png`.
+**No word budget.** An earlier version of this spec set one and it did damage:
+it turned into an argument about whether to cut a result, and once into a
+negotiation over the ceiling itself. A section is the right length when it
+explains the thing and stops. GA-001's Intuition section had to grow
+substantially to become correct and clear, which a budget would have fought.
+
+What the budget was really trying to prevent is padding, and padding has a
+better test than word count — the voice rules in §1. Cut the performative
+prose and the length looks after itself.
+
+Per note: one demo, one `overview.png`, plus whatever supporting figures earn
+their place.
 
 Full derivations are required (that was an explicit decision), but the heavy
 algebra lives in `<details>` blocks or a trailing Appendix section so the main
@@ -173,24 +179,19 @@ line stays fast. A reader who skips every `<details>` must still get a
 complete, honest argument — the folded content is verification, not the load-
 bearing idea.
 
-If a note exceeds the budget, that is evidence it should split, not evidence
-the budget should stretch.
+Worth recording, since it is why the budget is gone. GA-001 first ran long,
+and the overrun was argued to be load-bearing content. It was not: rewriting
+it into the two registers above, with no loss of results, cut roughly 350
+words. The padding *was* the performative voice, and the word count had been
+measuring the symptom.
 
-**A budget exception for GA-001 was granted and then revoked, same day.**
-The note hit 1780 words and the overrun was argued to be load-bearing content.
-It was not. Rewriting it into the two registers above — cutting the perception
-digression and the performative prose, with no loss of results — brought it to
-**1429**, comfortably inside the original budget, with every figure, number
-and test intact.
+Then the opposite failure. Once the note was inside the limit, the limit
+started arguing against necessary work — the Intuition section was wrong and
+unclear, and fixing it properly meant roughly doubling that section. A budget
+would have made that a negotiation instead of a correction.
 
-Worth recording because the two symptoms had one cause: the padding *was* the
-performative voice. Treat a budget overrun as a suspected style problem before
-accepting it as a content problem, and re-measure after a voice pass rather
-than negotiating the ceiling.
-
-(Also: measure with a counter that strips URLs and image alt text. The naive
-one over-counted this note by roughly 80 words, which nearly bought a trim the
-prose did not need.)
+So: diagnose length through §1's voice rules, and let a section run as long as
+the explanation needs.
 
 ### 2.5 Cross-linking
 
@@ -450,8 +451,6 @@ Artifact — before the next one starts. No parallel half-finished notes.
 
 - [ ] `figures/overview.png` exists and is referenced
 - [ ] metadata line filled in
-- [ ] main text within the 1200–1500 word budget (count excluding URLs, image
-      alt text, tables, code blocks and `<details>` content)
 - [ ] voice pass: no second person, no rhythm fragments, no bolded punchlines,
       no self-commentary, no unsourced quantities (§1)
 - [ ] every `src/` test passes; conventions in prose match what the tests assert

@@ -24,21 +24,10 @@ no crossings, and still admit no set of planes that projects onto it — not
 planes that are hard to find, but none at all.
 
 So: which flat drawings are the real ones? What creates the difficulty, and can
-it be counted? And is there a test — some condition a straight-line planar
-drawing must satisfy before it can be pulled up into three dimensions, and that
-a computer can check?
+it be counted? And is there a test or a condition a straight-line planar
+drawing must satisfy,  before it can be pulled up into three dimensions, and that a computer can check?
 
-All of this was settled in 1864, by Maxwell, in a paper about trusses. The
-answer still matters in three fields:
-
-- **Graph theory.** The answer is a statement about planar duality, and the
-  first step toward Steinitz's theorem: every 3-connected planar graph is the
-  graph of a convex polyhedron.
-- **Graphics.** Sketch-to-3D systems work against this constraint whether or
-  not they name it. A stroke network with no lift describes no object.
-- **Computational geometry.** Delaunay triangulations, Voronoi diagrams and
-  power diagrams are all defined by lifting a flat structure into one more
-  dimension and viewing the result from below.
+All of this was settled in 1864, by Maxwell, in a paper about trusses. It's not common that a 150 year-old problem still resonates in computer science. But this problem still matters in graph theory, graphics, computational geometry and many other fields.
 
 ## Intuition
 
