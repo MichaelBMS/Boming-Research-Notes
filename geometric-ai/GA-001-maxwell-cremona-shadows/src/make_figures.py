@@ -244,6 +244,45 @@ def make_overview():
     plt.close(figure)
 
 
+def make_tolerance():
+    """Four drawings you cannot tell apart, and the cliff underneath them."""
+    offsets = [0.0, 0.01, 0.08, 0.24]
+    figure = plt.figure(figsize=(12.4, 4.3))
+    grid = figure.add_gridspec(
+        1, 4, wspace=0.05, left=0.02, right=0.98, top=0.82, bottom=0.24
+    )
+
+    for column, offset in enumerate(offsets):
+        points, edges = cube_schlegel(inner_corner=(1.0 + offset, 1.0 + offset))
+        dimension = stress.self_stress_basis(points, edges).shape[1]
+        width = points[:, 0].max() - points[:, 0].min()
+        displacement = 100.0 * offset * np.sqrt(2.0) / width
+
+        ax = figure.add_subplot(grid[0, column])
+        draw_graph(ax, points, edges)
+        panel_title(ax, "corner moved %.2f%%" % displacement, MUTED)
+        # Neutral, not alarm-red: an unliftable drawing is an absence of an
+        # answer, not an error -- and red already means tension here.
+        ax.text(
+            0.5, -0.03,
+            "a shadow" if dimension else "the shadow of nothing",
+            transform=ax.transAxes, ha="center", va="top", fontsize=12.5,
+            color=INK if dimension else MUTED,
+        )
+        ax.text(
+            0.5, -0.15, "stress dimension %d" % dimension,
+            transform=ax.transAxes, ha="center", va="top",
+            fontsize=10.5, color=MUTED,
+        )
+
+    figure.suptitle(
+        "All four of these are a cube to you. Only the first one is a cube.",
+        fontsize=14.5, color=INK, y=0.945,
+    )
+    figure.savefig(FIGURES / "tolerance.png", dpi=190)
+    plt.close(figure)
+
+
 def make_tetrahedron():
     """The smallest interesting case, worked end to end."""
     points, edges = tetrahedron_schlegel()
@@ -279,6 +318,7 @@ def make_tetrahedron():
 if __name__ == "__main__":
     FIGURES.mkdir(exist_ok=True)
     make_overview()
+    make_tolerance()
     make_tetrahedron()
-    print("wrote", FIGURES / "overview.png")
-    print("wrote", FIGURES / "tetrahedron.png")
+    for name in ("overview.png", "tolerance.png", "tetrahedron.png"):
+        print("wrote", FIGURES / name)

@@ -51,8 +51,9 @@ Agent architectures, memory, planning, tool use, and multi-agent systems.
 
 ### [GA-001 — When Is a Flat Drawing the Shadow of a Solid?](./geometric-ai/GA-001-maxwell-cremona-shadows/)
 
-Your visual system rejects a Penrose triangle in a tenth of a second. Maxwell
-worked out in 1864 what it is checking — and the answer is a rank test.
+Move one corner of a cube drawing by a third of a percent and it stops being
+the shadow of any solid. You will not notice. Maxwell's 1864 test, which turns
+the question into a rank computation, notices immediately.
 
 ![Overview](./geometric-ai/GA-001-maxwell-cremona-shadows/figures/overview.png)
 

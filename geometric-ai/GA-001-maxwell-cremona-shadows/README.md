@@ -17,16 +17,27 @@ orthogonal projection of a polyhedral surface in three dimensions?
 
 ## Motivation
 
-You already have an answer, and it runs in about a tenth of a second.
+You have an opinion about this already; it forms in about a tenth of a second.
+It is also, in a precise sense, wrong.
 
-Show someone a Penrose triangle and they will tell you something is wrong with
-it long before they can say what. Show them a wonky sketch of a cube and they
-will accept the cube without comment. Whatever your visual system is doing, it
-is plainly not searching the space of three-dimensional shapes — so what is it
-computing?
+![Four drawings of a cube, only one of which is a cube](./figures/tolerance.png)
 
-The question is not only about perception. It shows up wherever flat data has
-to stand for solid geometry:
+That is the same graph four times. The first is the projection of a cube. The
+second has one corner displaced by a third of a percent of the drawing's width
+— a difference you cannot see and I cannot draw — and it is the projection of
+nothing whatsoever. The last two are visibly crooked, and you will call them
+cubes anyway.
+
+So your visual system is generous exactly where the theorem is strict — and no
+more reliable in the other direction. The "impossible" verdict you pass on a
+Penrose triangle is really a verdict on a *rectangular* reading of it, and
+Sugihara's work lives in that gap: many drawings we call impossible are honest
+projections of real polyhedra that simply are not rectangular. The famous
+physical Penrose triangle is not even a solid — three rods that never touch,
+closing only from one viewpoint.
+
+Perception is a fast approximation to something. This note is about the
+something, which is not only a question about eyes:
 
 - **Graph theory.** The answer turns out to be a statement about planar
   duality, and it is the first step toward Steinitz's theorem — every
@@ -38,8 +49,8 @@ to stand for solid geometry:
   power diagrams are all defined by lifting flat things into one more
   dimension and looking at the result from below. Same machinery.
 
-James Clerk Maxwell answered it in 1864, in a paper about trusses, and the
-answer is far better than the question deserves.
+Maxwell answered it in 1864, in a paper about trusses, and the answer is
+better than the question deserves.
 
 ## Intuition
 
@@ -157,28 +168,20 @@ build `R(p)`, take the nullspace of `Rᵀ` by SVD, integrate the resulting `ω`
 over a spanning tree of the dual, and read off either heights (a polyhedron)
 or gradients (a reciprocal diagram — GA-002's subject) from the same array.
 
-The test that matters is a **falsifiable prediction about a specific picture**:
-the Schlegel diagram of a cube — a square inside a square, corners joined —
-should carry a self-stress, and moving one inner corner off its position
-should destroy it. The graph is untouched; only geometry changes.
-
-Everything the prose claims is pinned by
-[`src/test_stress.py`](./src/test_stress.py), including the two hand-derived
-numbers below and the sign conventions, so the note cannot drift away from the
-code.
+Every number and sign convention the prose quotes is pinned by
+[`src/test_stress.py`](./src/test_stress.py), written before the solver, so
+the note cannot drift away from the code.
 
 ## Visualization
 
-`figures/overview.png` is the experiment: top row a cube that lifts, bottom
-row the same graph with one corner moved. The third column is the payoff —
-where the good drawing closes into a frustum, the bad one is a roof whose
-faces slide past each other, and the red bar marks the worst disagreement.
+The third column of the overview figure is the payoff. Where the good drawing
+closes into a frustum, the bad one is a roof whose faces slide past each
+other; the red bar marks the worst disagreement.
 
-[`demo.html`](./demo.html) — also published as
+[`demo.html`](./demo.html) — published as
 [Maxwell's Shadow Test](https://claude.ai/code/artifact/ed5a605e-92a6-4b24-97d6-0c7ed142d9cb)
-— does the same thing continuously. Drag a vertex and the rank test reruns on
-every mouse move; the verdict flips the instant you leave the liftable set,
-which is almost immediately, because that set has measure zero.
+— does this continuously: drag a vertex and the rank test reruns on every
+mouse move.
 
 ## Results
 
@@ -195,48 +198,46 @@ inner square to a constant height.
 
 ![The smallest liftable drawing](./figures/tetrahedron.png)
 
-The four-vertex case is small enough to do entirely by hand. Symmetry makes
-the centre's equilibrium free, corner equilibrium forces `ω_spoke =
-−3 ω_boundary`, and integrating gives an apex at `√3/2` over a boundary at
-zero — three compression spokes holding the peak up. The code agrees to nine
-decimals. Rescale the same stress so the spokes carry `+1` instead and the
-apex flips to `−√3/6`: interior edges positive, and the tent becomes a bowl,
-which is the convex case.
+The four-vertex case is small enough to do by hand: symmetry makes the
+centre's equilibrium free, corner equilibrium forces `ω_spoke = −3 ω_boundary`,
+and integrating puts the apex at `√3/2` — three compression spokes holding the
+peak up. The code agrees to nine decimals. Rescale so the spokes carry `+1`
+instead and the apex flips to `−√3/6`: interior edges positive, tent becomes
+bowl, which is the convex case.
 
-Two things are worth noticing. First, the failed case fails *decisively*: the
-smallest singular value is `0.248`, not a numerical whisker away from zero.
-"Impossible" is not a near-miss. Second, the reciprocal-of-the-reciprocal
-returns the original drawing exactly, which is a stronger check on the
-orientation conventions than anything I could have argued.
+The failure is exact but not always *loud*. Any nudge at all drops the
+dimension to zero, yet the smallest singular value grows with the nudge: the
+`0.248` above comes from a visibly moved corner, while the invisible third of
+a percent in the opening figure leaves only `0.0015`. Mathematically the same
+verdict; numerically a much quieter one, which is the whole content of the
+tolerance caveat below.
+
+Separately, the reciprocal-of-the-reciprocal returns the original drawing
+exactly — a stronger check on the orientation conventions than anything I
+could have argued.
 
 ## Discussion
 
-What this shows: liftability is decidable by linear algebra, in the same
-breath as computing a rank, with no search anywhere.
+What this shows: liftability is decidable by linear algebra, with no search
+anywhere.
 
 What it does **not** show, and should not be read as showing:
 
-- **Nothing here is about generic behaviour.** Liftable drawings are a measure-
-  zero set. The demo makes this visceral: nudge anything and the verdict dies.
-  The interesting question is never "is this random drawing liftable" but "how
-  far is it from being liftable", which is a different, non-linear question.
-- **Rank tests are brittle near degeneracies.** Collinear vertices and
-  coincident points move the rank around, and a tolerance decides the answer.
-  The cube's `0.248` is comfortable; a drawing that is *nearly* liftable is
-  genuinely ambiguous, and no threshold makes that go away.
+- **Liftable drawings are measure zero, and near-liftable ones are genuinely
+  ambiguous.** For anything drawn by hand the useful question is not "is this
+  liftable" but "how far from liftable" — non-linear, and not answered here.
+  Collinear or coincident vertices make it worse still, because then a
+  tolerance rather than the geometry decides.
 - **"Lifts" is weaker than "lifts to something you would call an object."**
-  This note asks only for a piecewise-linear surface. Convexity needs the
-  uniform-sign condition, and strict convexity, self-intersection and
-  realisability with sane coordinates are all separate questions — the last of
-  which turns nasty, as GA-004 will show.
-- Everything here fixes the outer face as the zero plane. That is a
-  normalisation, not a result.
+  This note asks only for a piecewise-linear surface, with the outer face
+  normalised to the zero plane. Convexity needs the uniform-sign condition;
+  strict convexity, self-intersection and realisability with sane coordinates
+  are separate questions — the last of which turns nasty, as GA-004 will show.
 
 ## Why It Matters
 
-The correspondence is the door into three things this notebook cares about.
-
-It makes polyhedral realisability **linear**, and therefore differentiable:
+The correspondence makes polyhedral realisability **linear**, and therefore
+differentiable:
 `ω` solves a linear system in the vertex positions, so a liftability residual
 can be backpropagated through. A generative model over planar graphs can be
 handed liftability as a hard constraint rather than a loss term it learns to
@@ -275,9 +276,11 @@ turn out to be one map.
    projection.
 3. W. Whiteley, "Motions and stresses of projected polyhedra",
    *Structural Topology* **7**, 1982.
-4. K. Sugihara, *Machine Interpretation of Line Drawings*, MIT Press, 1986 —
-   the computational-vision reading, and the impossible objects that turn out
-   to be buildable.
+4. K. Sugihara, *Machine Interpretation of Line Drawings*, MIT Press, 1986,
+   and the later work on anomalous pictures — deciding which "impossible"
+   drawings are in fact projections of realisable, non-rectangular solids.
+   D. Huffman (1971) and M. Clowes (1971) gave the junction-labelling reading
+   of the same question.
 5. E. Steinitz, 1922 — 3-connected planar graphs are the graphs of convex
    polyhedra. Taken up in GA-004.
 
