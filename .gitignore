@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Environments
+.venv/
+venv/
+env/
+.env
+
+# Jupyter
+# Note: notebook OUTPUTS are intentionally committed — they are part of what
+# makes a note readable directly on GitHub. Only checkpoints are ignored.
+.ipynb_checkpoints/
+
+# Model weights and large binaries. Toy experiment data should stay small
+# and be committed alongside the note that uses it.
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.h5
+
+# Editors
+.vscode/
+.idea/

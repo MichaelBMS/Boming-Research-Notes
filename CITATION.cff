@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+title: "Boming's Research Notes"
+message: >-
+  If you use these notes, figures, or code in your own work,
+  please cite them using the metadata below.
+type: dataset
+authors:
+  - family-names: Shi
+    given-names: Boming
+    alias: MichaelBMS
+abstract: >-
+  A public research notebook: small experiments, visual explanations, and
+  technical notes on geometric intelligence, 3D AI, reinforcement learning,
+  and AI agents.
+repository-code: "https://github.com/MichaelBMS/Boming-Research-Notes"
+url: "https://github.com/MichaelBMS/Boming-Research-Notes"
+license: CC-BY-4.0
+version: "0.1.0"
+date-released: "2026-08-16"
+keywords:
+  - geometric deep learning
+  - differentiable geometry
+  - signed distance fields
+  - 3D vision
+  - reinforcement learning
+  - AI agents
+  - research notes
