@@ -17,8 +17,22 @@ orthogonal projection of a polyhedral surface in three dimensions?
 
 ## Motivation
 
-You have an opinion about this already; it forms in about a tenth of a second.
-It is also, in a precise sense, wrong.
+Three dimensions to two is free. Point a camera at a solid, drop a coordinate,
+and you have a drawing. The projection destroys information and leaves no
+receipt.
+
+Going back fails in a way that is worse than "hard". You can be handed a
+drawing in which every face is a sensible polygon, nothing crosses, and anyone
+would name the object without hesitating — and there is no set of planes that
+projects to it. Not difficult to find. **None.**
+
+The shortage can be counted, and the Results below count it: the
+square-in-a-square drawing of a cube takes sixteen numbers to place, of which
+you get to choose thirteen if it has to be a shadow. Being a picture of
+anything costs degrees of freedom.
+
+Your own opinion on all this forms in about a tenth of a second and is wrong
+in both directions.
 
 ![Four drawings of a cube, only one of which is a cube](./figures/tolerance.png)
 
@@ -49,8 +63,9 @@ something, which is not only a question about eyes:
   power diagrams are all defined by lifting flat things into one more
   dimension and looking at the result from below. Same machinery.
 
-Maxwell answered it in 1864, in a paper about trusses, and the answer is
-better than the question deserves.
+All of which was posed and settled a century and a half ago. Maxwell found the
+condition in 1864, in a paper about trusses, and it is far more elegant than
+the counting above deserves.
 
 ## Intuition
 
@@ -215,6 +230,22 @@ tolerance caveat below.
 Separately, the reciprocal-of-the-reciprocal returns the original drawing
 exactly — a stronger check on the orientation conventions than anything I
 could have argued.
+
+### What the three lost degrees of freedom buy
+
+![Two drawings with a vanishing point, one of which lifts](./figures/vanishing-point.png)
+
+The four connectors are images of four parallel edges, so they must meet at a
+vanishing point. Most people stop there, and it is not enough: keep the
+concurrency exactly, slide the inner corners unevenly along their own rays,
+and liftability dies anyway — the right-hand drawing above.
+
+What survives is the outer quad (eight numbers), the vanishing point (two),
+and three of the four slide ratios. The fourth is then determined; bisection
+puts it at `0.3358` where the symmetric answer would be `0.48`, and that solid
+has a slanted top rather than a level one. Thirteen free numbers out of
+sixteen, and the Jacobian of that parametrisation has full rank 13, so the
+family is not secretly smaller.
 
 ## Discussion
 

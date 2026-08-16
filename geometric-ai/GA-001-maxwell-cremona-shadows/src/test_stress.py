@@ -12,7 +12,13 @@ import numpy as np
 import pytest
 
 import stress
-from examples import IMPOSSIBLE_CORNER, cube_schlegel, tetrahedron_schlegel
+from examples import (
+    IMPOSSIBLE_CORNER,
+    IRREGULAR_QUAD,
+    cube_schlegel,
+    cube_with_vanishing_point,
+    tetrahedron_schlegel,
+)
 
 
 def test_tetrahedron_schlegel_stress_space_is_one_dimensional():
@@ -160,6 +166,67 @@ def test_convex_schlegel_puts_every_interior_edge_in_compression():
 
     np.testing.assert_allclose(outer_edges, 1.0, atol=1e-9)
     assert np.all(interior_edges < -1e-9)
+
+
+# --- how many degrees of freedom being a shadow actually costs -----------
+
+
+def dimension_of(points, edges):
+    return stress.self_stress_basis(points, edges).shape[1]
+
+
+def test_equal_slides_always_lift_whatever_the_quad_and_apex():
+    """Slide all four inner corners the same fraction along their rays and the
+    drawing lifts -- to a frustum -- for any outer quad and any apex. This is
+    the easy, symmetric part of the liftable family."""
+    for apex in [(0.0, 0.0), (0.7, -0.4), (-0.9, 0.6)]:
+        for fraction in [0.3, 0.5, 0.72]:
+            points, edges = cube_with_vanishing_point(
+                IRREGULAR_QUAD, apex, [fraction] * 4
+            )
+            assert dimension_of(points, edges) == 1, (apex, fraction)
+
+
+def test_a_vanishing_point_is_not_enough_on_its_own():
+    """The intuition most people have -- 'the four edges meet at a vanishing
+    point, so it is a projection' -- is necessary but nowhere near sufficient.
+    Keep the concurrency, slide the corners unevenly, and liftability dies."""
+    points, edges = cube_with_vanishing_point(
+        IRREGULAR_QUAD, (0.2, 0.1), [0.40, 0.55, 0.50, 0.62]
+    )
+
+    assert dimension_of(points, edges) == 0
+
+
+def test_the_fourth_slide_is_forced_by_the_other_three():
+    """Three slides are free; the fourth is determined. Solved here by
+    bisection on the smallest singular value, which lands on a drawing that
+    lifts to a genuinely slanted top -- not the symmetric frustum."""
+    quad, apex, three = IRREGULAR_QUAD, (0.2, 0.1), [0.40, 0.55, 0.50]
+
+    def margin(fourth):
+        points, edges = cube_with_vanishing_point(quad, apex, three + [fourth])
+        return np.linalg.svd(
+            stress.rigidity_matrix(points, edges).T, compute_uv=False
+        )[-1]
+
+    low, high = 0.05, 0.95
+    for _ in range(80):
+        left, right = low + (high - low) / 3, high - (high - low) / 3
+        if margin(left) < margin(right):
+            high = right
+        else:
+            low = left
+    fourth = (low + high) / 2
+
+    points, edges = cube_with_vanishing_point(quad, apex, three + [fourth])
+    assert dimension_of(points, edges) == 1
+    assert abs(fourth - 0.3358) < 1e-3
+
+    heights = stress.lift(
+        points, edges, stress.self_stress_basis(points, edges)[:, 0]
+    ).heights
+    assert heights[4:].std() > 1e-2, "the top face should be slanted, not level"
 
 
 # --- what failure actually looks like ------------------------------------

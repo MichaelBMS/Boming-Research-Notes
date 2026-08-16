@@ -52,3 +52,25 @@ def cube_schlegel(inner_corner=(1.0, 1.0)):
 
 #: The corner displacement that turns the cube drawing into an impossible one.
 IMPOSSIBLE_CORNER = (1.4, 0.7)
+
+
+def cube_with_vanishing_point(outer, apex, slides):
+    """A cube drawing built so its four connecting edges are concurrent.
+
+    The connectors are the images of four parallel edges of the solid, so they
+    have to meet at a common point -- the vanishing point `apex`. Each inner
+    corner then sits somewhere along its own ray, at fraction `slides[i]`.
+
+    This is the parametrisation the degrees-of-freedom count uses: eight
+    numbers for the outer quad, two for the apex, four slides. Concurrency is
+    baked in, which is exactly what makes it useful for showing that
+    concurrency is *not* sufficient.
+    """
+    outer = np.asarray(outer, dtype=float)
+    apex = np.asarray(apex, dtype=float)
+    inner = outer + np.asarray(slides, dtype=float)[:, None] * (apex - outer)
+    return np.vstack([outer, inner]), cube_schlegel()[1]
+
+
+#: An irregular outer quad, used so results cannot lean on symmetry.
+IRREGULAR_QUAD = [[-2.3, -1.8], [2.1, -2.4], [1.7, 2.2], [-2.6, 1.5]]

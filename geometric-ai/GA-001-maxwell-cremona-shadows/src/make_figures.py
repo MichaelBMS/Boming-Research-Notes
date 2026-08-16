@@ -23,7 +23,13 @@ import numpy as np  # noqa: E402
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # noqa: E402
 
 import stress  # noqa: E402
-from examples import IMPOSSIBLE_CORNER, cube_schlegel, tetrahedron_schlegel  # noqa: E402
+from examples import (  # noqa: E402
+    IMPOSSIBLE_CORNER,
+    IRREGULAR_QUAD,
+    cube_schlegel,
+    cube_with_vanishing_point,
+    tetrahedron_schlegel,
+)
 
 FIGURES = pathlib.Path(__file__).resolve().parent.parent / "figures"
 
@@ -283,6 +289,54 @@ def make_tolerance():
     plt.close(figure)
 
 
+def make_vanishing_point():
+    """Concurrency is necessary and nowhere near sufficient."""
+    apex = (0.2, 0.1)
+    cases = [
+        ("all four corners slid equally", [0.48] * 4),
+        ("three slid the same, one moved", [0.40, 0.55, 0.50, 0.62]),
+    ]
+
+    figure = plt.figure(figsize=(9.6, 5.2))
+    grid = figure.add_gridspec(
+        1, 2, wspace=0.06, left=0.03, right=0.97, top=0.80, bottom=0.17
+    )
+
+    for column, (label, slides) in enumerate(cases):
+        points, edges = cube_with_vanishing_point(IRREGULAR_QUAD, apex, slides)
+        dimension = stress.self_stress_basis(points, edges).shape[1]
+
+        ax = figure.add_subplot(grid[0, column])
+        for corner in range(4):
+            ax.plot(
+                [points[corner, 0], apex[0]], [points[corner, 1], apex[1]],
+                color=HAIRLINE, linewidth=1.2, linestyle=(0, (3, 3)), zorder=0,
+            )
+        draw_graph(ax, points, edges)
+        ax.scatter(
+            [apex[0]], [apex[1]], s=120, facecolors=SURFACE,
+            edgecolors=MUTED, linewidths=1.6, zorder=5,
+        )
+        ax.annotate(
+            "vanishing point", apex, textcoords="offset points", xytext=(16, -32),
+            fontsize=9.5, color=MUTED,
+        )
+        panel_title(ax, label, MUTED)
+        ax.text(
+            0.5, -0.04,
+            "a shadow" if dimension else "the shadow of nothing",
+            transform=ax.transAxes, ha="center", va="top", fontsize=12.5,
+            color=INK if dimension else MUTED,
+        )
+
+    figure.suptitle(
+        "Both drawings have a vanishing point. Only the left one is a shadow.",
+        fontsize=13.5, color=INK, y=0.935,
+    )
+    figure.savefig(FIGURES / "vanishing-point.png", dpi=190)
+    plt.close(figure)
+
+
 def make_tetrahedron():
     """The smallest interesting case, worked end to end."""
     points, edges = tetrahedron_schlegel()
@@ -319,6 +373,9 @@ if __name__ == "__main__":
     FIGURES.mkdir(exist_ok=True)
     make_overview()
     make_tolerance()
+    make_vanishing_point()
     make_tetrahedron()
-    for name in ("overview.png", "tolerance.png", "tetrahedron.png"):
+    for name in (
+        "overview.png", "tolerance.png", "vanishing-point.png", "tetrahedron.png"
+    ):
         print("wrote", FIGURES / name)
