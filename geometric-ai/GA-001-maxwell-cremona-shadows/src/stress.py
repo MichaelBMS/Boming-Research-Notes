@@ -3,13 +3,21 @@
 Canonical copy. GA-002 and later notes carry verbatim copies of this file;
 edit this one and re-copy rather than editing a copy in place.
 
-Conventions (see docs/superpowers/specs/2026-08-16-maxwell-cremona-series-design.md):
+Conventions for the whole series, pinned by the tests in test_stress.py:
 
     A self-stress on a framework (G, p) is omega: E -> R with
 
         sum_{j ~ i} omega_ij (p_j - p_i) = 0
 
     at *every* vertex i. Positive omega is tension, negative is compression.
+
+    For an edge e = uv with face f on the left of u -> v and g on its right,
+    the gradients of the lift on those two faces satisfy
+
+        a_f - a_g = omega_e * R90(p_v - p_u)
+
+    where R90 is the counterclockwise quarter turn. Omega positive on every
+    interior edge then means the lift is convex.
 """
 
 from __future__ import annotations
