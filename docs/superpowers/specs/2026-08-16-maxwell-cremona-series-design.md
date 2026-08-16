@@ -416,8 +416,15 @@ against the primary source and cited precisely, or softened until it is:
 
 1. Aurenhammer 1987 — the exact form of the power-diagram ⟺ liftability
    equivalence, and its theorem number.
-2. The precise "spider web" statement, and correct attribution among
-   Maxwell, Whiteley, and Ash–Bolker.
+2. ~~The precise "spider web" statement, and correct attribution among
+   Maxwell, Whiteley, and Ash–Bolker.~~ **Resolved 2026-08-16.** The source is
+   Ash, Bolker, Crapo & Whiteley (1988), *Convex Polyhedra, Dirichlet
+   Tessellations, and Spider Webs* — four authors, not the pairing this list
+   originally guessed. The statement: a 3-connected planar drawing is the
+   projection of a convex polyhedron iff it carries an equilibrium stress
+   positive on the **interior** edges. GA-001's sign convention (§2.2) agrees
+   with it, confirmed numerically by
+   `test_positive_interior_stress_gives_a_convex_lift`.
 3. Whether the historical papers use the perpendicular or the parallel
    convention — the series describes both, so this only affects the
    historical sentence, but it should be right.

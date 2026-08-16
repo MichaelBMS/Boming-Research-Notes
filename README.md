@@ -49,7 +49,15 @@ Agent architectures, memory, planning, tool use, and multi-agent systems.
 
 ## Recent Notes
 
-*The first batch of notes is in progress.*
+### [GA-001 — When Is a Flat Drawing the Shadow of a Solid?](./geometric-ai/GA-001-maxwell-cremona-shadows/)
+
+Your visual system rejects a Penrose triangle in a tenth of a second. Maxwell
+worked out in 1864 what it is checking — and the answer is a rank test.
+
+![Overview](./geometric-ai/GA-001-maxwell-cremona-shadows/figures/overview.png)
+
+`Geometric AI` · `Concept` · `Complete` · 2026-08-16 ·
+[interactive demo](https://claude.ai/code/artifact/ed5a605e-92a6-4b24-97d6-0c7ed142d9cb)
 
 <!-- Template for each entry — newest first, keep roughly the last 5:
 
@@ -69,7 +77,7 @@ Can a discrete nearest-seed assignment coexist with gradient-based optimization?
 
 | ID | Title | Area | Type | Status | Date |
 |----|-------|------|------|--------|------|
-| *—* | *first notes in progress* | *—* | *—* | *—* | *—* |
+| [GA-001](./geometric-ai/GA-001-maxwell-cremona-shadows/) | When Is a Flat Drawing the Shadow of a Solid? | Geometric AI | Concept | Complete | 2026-08-16 |
 
 **Type** — `Concept` · `Experiment` · `Research Idea`
 **Status** — `Planned` · `Exploring` · `Complete` · `Open Question`

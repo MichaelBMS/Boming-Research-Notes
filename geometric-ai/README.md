@@ -10,7 +10,16 @@ actually need to be differentiable, and what can stay discrete?**
 
 | ID | Title | Type | Status | Date |
 |----|-------|------|--------|------|
-| *—* | *first notes in progress* | *—* | *—* | *—* |
+| [GA-001](./GA-001-maxwell-cremona-shadows/) | When Is a Flat Drawing the Shadow of a Solid? | Concept | Complete | 2026-08-16 |
+
+### Series — the Maxwell–Cremona correspondence
+
+One classical theorem, read as graph theory and as computer graphics.
+
+1. **GA-001** — When Is a Flat Drawing the Shadow of a Solid? *(complete)*
+2. **GA-002** — Three Faces of Planar Duality *(in progress)*
+3. **GA-003** — Delaunay, Voronoi, and Power Diagrams Were the Same Theorem *(planned)*
+4. **GA-004** — Algorithms, and What They Cost *(planned)*
 
 ---
 
