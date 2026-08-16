@@ -17,17 +17,19 @@ orthogonal projection of a polyhedral surface in three dimensions?
 
 ## Motivation
 
-Three dimensions to two is free. Point a camera at a solid, drop a coordinate,
-and the drawing is finished. Going back is not merely harder; much of the time
+Three dimensions to two is simple. Point a camera at a solid, drop a coordinate,
+and the drawing is finished. However, going back is not merely harder; much of the time
 there is nothing to go back to. A drawing can have sensible polygonal faces and
 no crossings, and still admit no set of planes that projects onto it — not
 planes that are hard to find, but none at all.
 
-The shortfall can be counted. Placing the square-in-a-square drawing of a cube
-takes sixteen numbers, two per vertex. If the drawing has to be a shadow, only
-thirteen of them are free; the Results section below measures this.
+So: which flat drawings are the real ones? What creates the difficulty, and can
+it be counted? And is there a test — some condition a straight-line planar
+drawing must satisfy before it can be pulled up into three dimensions, and that
+a computer can check?
 
-The question reaches three fields:
+All of this was settled in 1864, by Maxwell, in a paper about trusses. The
+answer still matters in three fields:
 
 - **Graph theory.** The answer is a statement about planar duality, and the
   first step toward Steinitz's theorem: every 3-connected planar graph is the
@@ -37,8 +39,6 @@ The question reaches three fields:
 - **Computational geometry.** Delaunay triangulations, Voronoi diagrams and
   power diagrams are all defined by lifting a flat structure into one more
   dimension and viewing the result from below.
-
-Maxwell stated the condition in 1864, in a paper about trusses.
 
 ## Intuition
 
@@ -188,9 +188,12 @@ with it. The `0.248` in the table comes from a visibly moved corner; displacing
 that corner by a third of a percent of the drawing's width leaves `0.0015`. The
 same verdict mathematically, a far narrower one numerically.
 
-### What the three lost degrees of freedom buy
+### How many degrees of freedom a shadow costs
 
 ![Two drawings with a vanishing point, one of which lifts](./figures/vanishing-point.png)
+
+Placing this drawing takes sixteen numbers, two per vertex, and all sixteen are
+free if it need only be a drawing. Requiring it to be a shadow removes three.
 
 The four connectors are images of four parallel edges of the solid, so they
 must meet at a vanishing point. That condition is necessary and not sufficient:

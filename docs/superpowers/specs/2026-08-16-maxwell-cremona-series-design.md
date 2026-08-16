@@ -53,9 +53,14 @@ than a technical report. The cause was a single performative voice applied to
 the whole note, so the derivations were straining for effect alongside the
 hook. Two registers, kept separate:
 
-**Register A — the opening only** (Question plus Motivation, ≤200 words
-together). Concise and light. **One** rhetorical turn is permitted; after it,
-go straight to the numbers.
+**Register A — the opening only** (Question plus the Motivation prose, ≤200
+words). Concise and light. **One** rhetorical turn is permitted; after it, go
+straight to the questions the note actually answers.
+
+The cap covers the hook prose, not flat factual content that happens to sit in
+the same section — GA-001's three-fields bullet list is Register B writing and
+is counted with the body. Measure the two separately rather than letting a
+useful list crowd out the hook, or the hook pad itself behind a list.
 
 **Register B — everything from Intuition onward.** Even-toned technical prose:
 state, define, derive, measure. The following are banned, because each one
