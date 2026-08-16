@@ -144,6 +144,24 @@ bearing idea.
 If a note exceeds the budget, that is evidence it should split, not evidence
 the budget should stretch.
 
+**Recorded exception — GA-001, ceiling 1800 words (decided 2026-08-16).**
+GA-001 came in at 1780. The overrun is not padding: the note ended up carrying
+two things that belong to the whole series and cannot sit anywhere else.
+
+1. The **forward/inverse framing** — projection is free, inverting it is often
+   impossible rather than merely hard. That is the series' thesis, and a
+   series states its thesis in note one.
+2. The **degrees-of-freedom count** (16 numbers to draw a cube, 13 free if it
+   must be a shadow), which is what turns "impossible" from an assertion into
+   an arithmetic fact, plus the measured finding that a vanishing point is
+   necessary but not sufficient.
+
+The alternative considered and rejected was moving the DOF result to GA-004,
+which would have separated the measurement from the cube it explains. The
+1200–1500 budget still stands for GA-002 through GA-004; if two of those also
+overrun, the series budget was wrong and should be reset to 1800 rather than
+patched note by note.
+
 ### 2.5 Cross-linking
 
 Each note opens with one sentence of back-reference and closes with one
@@ -166,11 +184,15 @@ what the verification actually showed.
 **Takeaway:** whether a drawing is three-dimensional is a linear algebra
 question on a planar graph.
 
-- **Hook:** impossible figures — the Penrose triangle, Escher, and Sugihara's
-  physically-buildable "impossible" objects. Your visual system judges these
-  in a second. On what evidence? Frame it as the graphics problem it is:
-  single-view interpretation of a line drawing, the thing every sketch-to-3D
-  system has to solve.
+- **Hook (revised 2026-08-16):** the forward/inverse asymmetry. Projection is
+  free; inverting it fails in a way worse than "hard", because a drawing can
+  look entirely reasonable and still be the projection of nothing. Then the
+  degrees-of-freedom count that makes this concrete, and only then perception
+  — which is *not* computing this test, and is wrong in both directions. The
+  original hook ("your visual system judges these in a second — on what
+  evidence?") was cut: it implied the eye computes liftability, which the
+  note's own measure-zero result contradicts, and it leaned on the Penrose
+  triangle in a way Sugihara's work undercuts.
 - **Question:** given a planar straight-line graph, when is it the orthogonal
   projection of a three-dimensional polyhedral surface?
 - **Intuition:** fold a sheet of paper along the edges. Each edge becomes a
@@ -398,7 +420,7 @@ Artifact — before the next one starts. No parallel half-finished notes.
 
 - [ ] `figures/overview.png` exists and is referenced
 - [ ] metadata line filled in
-- [ ] main text within the 1200–1500 word budget
+- [ ] main text within the 1200–1500 word budget (GA-001: 1800, see §2.4)
 - [ ] every `src/` test passes; conventions in prose match what the tests assert
 - [ ] `demo.html` opens correctly from `file://`, in both themes
 - [ ] Artifact published and linked
