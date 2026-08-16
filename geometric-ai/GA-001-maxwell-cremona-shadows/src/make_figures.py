@@ -186,15 +186,15 @@ def make_overview():
 
     ax = figure.add_subplot(grid[0, 0])
     draw_graph(ax, points, edges)
-    panel_title(ax, "A flat drawing")
+    panel_title(ax, "The drawing")
 
     ax = figure.add_subplot(grid[0, 1])
     draw_graph(ax, points, edges, omega=omega)
-    panel_title(ax, "carries a self-stress …")
+    panel_title(ax, "Its self-stress")
 
     ax = figure.add_subplot(grid[0, 2], projection="3d")
     draw_lift(ax, points, edges, lifted, omega)
-    panel_title(ax, "… so it is a shadow.")
+    panel_title(ax, "The lift")
 
     # --- bottom row: move one corner and it stops ---
     broken_points, broken_edges = cube_schlegel(IMPOSSIBLE_CORNER)
@@ -203,11 +203,11 @@ def make_overview():
 
     ax = figure.add_subplot(grid[1, 0])
     draw_graph(ax, broken_points, broken_edges, highlight=[6])
-    panel_title(ax, "Move one corner")
+    panel_title(ax, "One corner moved")
 
     ax = figure.add_subplot(grid[1, 1])
     draw_graph(ax, broken_points, broken_edges, faded=True)
-    panel_title(ax, "and no self-stress exists …")
+    panel_title(ax, "No self-stress exists")
     ax.text(
         0.5, -0.02, "stress space: dimension 0",
         transform=ax.transAxes, ha="center", va="top",
@@ -229,7 +229,7 @@ def make_overview():
 
     ax = figure.add_subplot(grid[1, 2], projection="3d")
     gap = draw_cracked_lift(ax, broken_points, trial)
-    panel_title(ax, "… so the roof never closes.")
+    panel_title(ax, "The attempted lift")
     ax.text2D(
         0.5, -0.04, "faces disagree by %.2f at the worst vertex" % gap,
         transform=ax.transAxes, ha="center", va="top", fontsize=10.5, color=MUTED,
@@ -271,7 +271,7 @@ def make_tolerance():
         # answer, not an error -- and red already means tension here.
         ax.text(
             0.5, -0.03,
-            "a shadow" if dimension else "the shadow of nothing",
+            "lifts" if dimension else "does not lift",
             transform=ax.transAxes, ha="center", va="top", fontsize=12.5,
             color=INK if dimension else MUTED,
         )
@@ -282,7 +282,7 @@ def make_tolerance():
         )
 
     figure.suptitle(
-        "All four of these are a cube to you. Only the first one is a cube.",
+        "One corner, four positions. Only the first drawing is a projection.",
         fontsize=14.5, color=INK, y=0.945,
     )
     figure.savefig(FIGURES / "tolerance.png", dpi=190)
@@ -324,13 +324,13 @@ def make_vanishing_point():
         panel_title(ax, label, MUTED)
         ax.text(
             0.5, -0.04,
-            "a shadow" if dimension else "the shadow of nothing",
+            "lifts" if dimension else "does not lift",
             transform=ax.transAxes, ha="center", va="top", fontsize=12.5,
             color=INK if dimension else MUTED,
         )
 
     figure.suptitle(
-        "Both drawings have a vanishing point. Only the left one is a shadow.",
+        "Both drawings have a vanishing point. Only the left one lifts.",
         fontsize=13.5, color=INK, y=0.935,
     )
     figure.savefig(FIGURES / "vanishing-point.png", dpi=190)
@@ -362,7 +362,7 @@ def make_tetrahedron():
     panel_title(ax, "apex at √3⁄2")
 
     figure.suptitle(
-        "The smallest liftable drawing: three compression spokes hold the peak up",
+        "The smallest liftable drawing: three compression spokes carry the peak",
         fontsize=13, color=INK, y=0.95,
     )
     figure.savefig(FIGURES / "tetrahedron.png", dpi=190)

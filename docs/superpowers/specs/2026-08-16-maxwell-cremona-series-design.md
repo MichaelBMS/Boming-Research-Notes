@@ -46,12 +46,39 @@ drawing interpretation and sketch-to-3D, mesh parametrization and UV
 unwrapping, Delaunay meshing, power diagrams for blue-noise sampling and
 optimal transport, straight skeletons for procedural building generation.
 
-### Voice
+### Voice — two registers (revised 2026-08-16)
 
-Accessible and funny, but dense. No padding, no throat-clearing. Every
-paragraph either advances the argument or earns its place with a genuinely
-good image. The humour is in the framing and the examples, never in filler
-asides.
+The first draft of GA-001 was rejected as reading like generated text rather
+than a technical report. The cause was a single performative voice applied to
+the whole note, so the derivations were straining for effect alongside the
+hook. Two registers, kept separate:
+
+**Register A — the opening only** (Question plus Motivation, ≤200 words
+together). Concise and light. **One** rhetorical turn is permitted; after it,
+go straight to the numbers.
+
+**Register B — everything from Intuition onward.** Even-toned technical prose:
+state, define, derive, measure. The following are banned, because each one
+appeared in that first draft and had to be cut:
+
+- **Second person.** Telling the reader what they see, think, or would call
+  something.
+- **Fragments used for rhythm.** "Not a search over shapes. Not an
+  optimisation. A rank test."
+- **Bolded punchlines** at the end of a paragraph.
+- **The "not X; Y" reversal** used as a flourish.
+- **Self-commentary** — prose praising its own argument. "More elegant than
+  the counting deserves"; "a stronger check than anything I could have
+  argued."
+- **Rhetorical precision** — any quantity without a source. GA-001 asserted
+  "a tenth of a second" about human perception inside a note that otherwise
+  verifies every number against a test or a citation. That is the same defect
+  as a wrong citation, not a matter of taste.
+
+Check a draft by grepping for `\byou\b`, for `\*\*[^*]*\*\*\.` at paragraph
+ends, and for any bare quantity that no test or reference supports.
+
+Figure captions follow Register B too: label the panels, do not narrate them.
 
 ### Non-goals
 
@@ -144,23 +171,21 @@ bearing idea.
 If a note exceeds the budget, that is evidence it should split, not evidence
 the budget should stretch.
 
-**Recorded exception — GA-001, ceiling 1800 words (decided 2026-08-16).**
-GA-001 came in at 1780. The overrun is not padding: the note ended up carrying
-two things that belong to the whole series and cannot sit anywhere else.
+**A budget exception for GA-001 was granted and then revoked, same day.**
+The note hit 1780 words and the overrun was argued to be load-bearing content.
+It was not. Rewriting it into the two registers above — cutting the perception
+digression and the performative prose, with no loss of results — brought it to
+**1429**, comfortably inside the original budget, with every figure, number
+and test intact.
 
-1. The **forward/inverse framing** — projection is free, inverting it is often
-   impossible rather than merely hard. That is the series' thesis, and a
-   series states its thesis in note one.
-2. The **degrees-of-freedom count** (16 numbers to draw a cube, 13 free if it
-   must be a shadow), which is what turns "impossible" from an assertion into
-   an arithmetic fact, plus the measured finding that a vanishing point is
-   necessary but not sufficient.
+Worth recording because the two symptoms had one cause: the padding *was* the
+performative voice. Treat a budget overrun as a suspected style problem before
+accepting it as a content problem, and re-measure after a voice pass rather
+than negotiating the ceiling.
 
-The alternative considered and rejected was moving the DOF result to GA-004,
-which would have separated the measurement from the cube it explains. The
-1200–1500 budget still stands for GA-002 through GA-004; if two of those also
-overrun, the series budget was wrong and should be reset to 1800 rather than
-patched note by note.
+(Also: measure with a counter that strips URLs and image alt text. The naive
+one over-counted this note by roughly 80 words, which nearly bought a trim the
+prose did not need.)
 
 ### 2.5 Cross-linking
 
@@ -420,7 +445,10 @@ Artifact — before the next one starts. No parallel half-finished notes.
 
 - [ ] `figures/overview.png` exists and is referenced
 - [ ] metadata line filled in
-- [ ] main text within the 1200–1500 word budget (GA-001: 1800, see §2.4)
+- [ ] main text within the 1200–1500 word budget (count excluding URLs, image
+      alt text, tables, code blocks and `<details>` content)
+- [ ] voice pass: no second person, no rhythm fragments, no bolded punchlines,
+      no self-commentary, no unsourced quantities (§1)
 - [ ] every `src/` test passes; conventions in prose match what the tests assert
 - [ ] `demo.html` opens correctly from `file://`, in both themes
 - [ ] Artifact published and linked
